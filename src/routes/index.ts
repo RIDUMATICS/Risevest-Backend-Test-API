@@ -9,6 +9,16 @@ import { authMiddleware, validator } from "../middlewares";
 import { IUserAuth } from "../interface";
 
 const router = express.Router();
+
+router.get('', async (_req, res) => {
+  return res.json({
+    postman_docs: "https://documenter.getpostman.com/view/16616487/2sA35G4Msm",
+    live_url: "https://risevest-backend-test-api.onrender.com/api",
+    production_docker_image:
+      "https://hub.docker.com/r/ridumatics/risevest-api-image",
+  });
+})
+
 router.post("/auth/login", validator("loginSchema"), async (req, res, next) => {
   try {
     const resp = await AuthController.login(req.body);
