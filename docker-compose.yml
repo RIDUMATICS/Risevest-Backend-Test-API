@@ -1,0 +1,41 @@
+version: "3.9"
+
+services:
+  postgresdb:
+    image: postgres
+    restart: unless-stopped
+    env_file: ./.env
+    environment:
+      POSTGRES_USER: ridwan
+      POSTGRES_PASSWORD: pass_word
+      POSTGRES_DB: risevest
+    ports:
+      - "5432:5432"
+    healthcheck:
+      test: ['CMD-SHELL', 'pg_isready -U ridwan -d risevest']
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    volumes:
+      - db:/var/lib/postgres
+  app:
+    build: .
+    restart: unless-stopped
+    volumes:
+      - .:/app
+      - /app/node_modules
+    ports:
+      - "3000:3000"
+    depends_on:
+      postgresdb:
+        condition: service_healthy
+    environment:
+      DATABASE_URL: postgres://ridwan:pass_word@postgresdb:5432/risevest
+      NODE_ENV: development
+      TOKEN_SECRET: passssss
+      PORT: 3000
+    stdin_open: true
+    tty: true
+
+volumes:
+  db:
