@@ -4,10 +4,12 @@ import {
   Column,
   ManyToOne,
   Index,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { Post, User } from "./index";
 
-@Entity({ name: 'comments'})
+@Entity({ name: "comments" })
 export class Comment {
   @PrimaryGeneratedColumn()
   id: number;
@@ -22,4 +24,10 @@ export class Comment {
   @ManyToOne(() => Post, (post) => post.comments)
   @Index()
   post: Post;
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }

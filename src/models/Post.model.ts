@@ -5,10 +5,12 @@ import {
   ManyToOne,
   OneToMany,
   Index,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from "typeorm";
 import { User, Comment } from "./index";
 
-@Entity({ name: 'posts'})
+@Entity({ name: "posts" })
 export class Post {
   @PrimaryGeneratedColumn()
   id: number;
@@ -25,4 +27,10 @@ export class Post {
 
   @OneToMany(() => Comment, (comment) => comment.post)
   comments: Comment[];
+
+  @CreateDateColumn()
+  createdAt: Date;
+
+  @UpdateDateColumn()
+  updatedAt: Date;
 }
